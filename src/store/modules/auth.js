@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     state: () => ({
         user: null,
-        token: localStorage.getItem("token") || null, // Store token in localStorage (or sessionStorage)
+        token: localStorage.getItem("token") || null, 
         loading: false,
         error: null,
     }),
@@ -15,7 +15,7 @@ export default {
         },
         SET_TOKEN(state, token) {
             state.token = token;
-            localStorage.setItem("token", token); // Save token to localStorage
+            localStorage.setItem("token", token); 
         },
         SET_LOADING(state, status) {
             state.loading = status;
@@ -26,7 +26,7 @@ export default {
         LOGOUT(state) {
             state.user = null;
             state.token = null;
-            localStorage.removeItem("token"); // Remove token from localStorage
+            localStorage.removeItem("token");
         },
     },
     actions: {
@@ -42,16 +42,16 @@ export default {
                 if (res.data.token) {
                     commit("SET_TOKEN", res.data.token);
                     commit("SET_USER", res.data.user);
-                    return { success: true }; // Return success to the component
+                    return { success: true }; 
                 } else {
                     commit("SET_ERROR", "Login failed");
-                    return { success: false }; // Return failure to the component
+                    return { success: false };
                 }
             } catch (err) {
                 // Handle error when response is not available
                 const errorMessage = err.response?.data?.error || "Login failed";
                 commit("SET_ERROR", errorMessage);
-                return { success: false, error: errorMessage }; // Return error details to the component
+                return { success: false, error: errorMessage }; 
             } finally {
                 commit("SET_LOADING", false);
             }
@@ -68,15 +68,14 @@ export default {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                });                // Handle successful login
+                });                
                 commit("LOGOUT");
-                return { success: true }; // Return success to the component
+                return { success: true }; 
 
             } catch (err) {
-                // Handle error when response is not available
                 const errorMessage = err.response?.data?.error || "Logout failed";
                 commit("SET_ERROR", errorMessage);
-                return { success: false, error: errorMessage }; // Return error details to the component
+                return { success: false, error: errorMessage }; 
             } finally {
                 commit("SET_LOADING", false);
             }
