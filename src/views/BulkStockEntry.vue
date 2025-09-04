@@ -115,7 +115,6 @@ export default {
         ];
 
 
-        // shallowRef -> AG Grid gets plain array, avoids reactive-proxy weirdness
         const rowData = shallowRef([]);
 
         const defaultColDef = {
@@ -216,7 +215,6 @@ export default {
             const cellKey = `${params.node.data.id}-${field}`;
             validationErrors.value = validationErrors.value.filter(error => !error.includes(cellKey));
 
-            // Add new error if invalid
             if (field === 'item_code' && (!value || value.trim() === '')) {
                 validationErrors.value.push(`Row ${params.node.data.stockNo}: Item Code is required`);
             }
@@ -265,7 +263,6 @@ export default {
                 }, 3000);
             }
 
-            // Refresh grid to update cell styling
             gridApi.refreshCells();
         };
 
@@ -285,14 +282,12 @@ export default {
                 location: "",
                 // storeName: storeOptions[0] // Default to first store
             };
-            // immutable replace (required with immutableData)
             rowData.value = [...rowData.value, newRow];
             clearMessages();
         };
 
         onMounted(async () => {
             try {
-                // Fetch store options from the API (using the Vuex store action)
                 const storeData = await store.dispatch("stocks/fetchStores");
 
                 console.log("Fetched stores:", storeData); // This should log the stores correctly
@@ -334,8 +329,7 @@ export default {
             try {
                 let saved = await store.dispatch("stocks/saveBulkStocks", toSave);
 
-                // important: if your server returns new IDs, update the grid's data
-                // so getRowId stays consistent with the canonical IDs
+               
                 rowData.value = saved; // immutable replace works with :immutableData="true"
 
                 successMessage.value = `✅ Successfully saved ${saved.length} records`;
@@ -367,13 +361,11 @@ export default {
 </script>
 
 <style>
-/* Minimal AG-Grid styling to maintain invalid cell highlighting */
 .invalid-cell {
     background-color: #f8d7da !important;
     border: 2px solid #dc3545 !important;
 }
 
-/* AG-Grid theme customization for MDB colors */
 .ag-theme-alpine {
     --ag-header-background-color: #f8f9fa;
     --ag-odd-row-background-color: #f8f9fa;
