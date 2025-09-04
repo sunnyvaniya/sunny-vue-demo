@@ -1,11 +1,9 @@
 import axios from "axios";
 
-// Set up the axios instance with a base URL
 const axiosInstance = axios.create({
     baseURL: "http://127.0.0.1:8000/api", // Your base API URL
 });
 
-// Interceptor to add the Bearer token before every request
 axiosInstance.interceptors.request.use(
     (config) => {
         // Check if token is passed in request config headers
@@ -19,7 +17,6 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Optionally, set up a response interceptor for error handling
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
