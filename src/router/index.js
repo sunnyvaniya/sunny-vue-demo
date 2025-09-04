@@ -32,12 +32,10 @@ const router = createRouter({
     routes,
 });
 
-// Optional navigation guard (checks auth before going to /stocks)
 router.beforeEach((to, from, next) => {
     const store = useStore();
     const token = store.state.auth.token; // Check for token in Vuex store
 
-    // If user is trying to access a protected route and they are not authenticated
     if (to.name !== 'Login' && !token) {
         next({ name: 'Login' }); // Redirect to Login page
     } else {
