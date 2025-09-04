@@ -1,11 +1,11 @@
-import axiosInstance from "@/axios";  // Assuming this is where you define axiosInstance
+import axiosInstance from "@/axios";  
 
 export default {
     namespaced: true,
 
     state: () => ({
         stocks: [],
-        stores: [], // your canonical list of stocks
+        stores: [], 
     }),
 
     getters: {
@@ -21,7 +21,7 @@ export default {
         },
 
         ADD_NEW_STOCKS(state, newStocks) {
-            state.stocks.push(...newStocks);  // Append the new stocks to the current list
+            state.stocks.push(...newStocks);  
         },
 
         REMOVE_STOCK(state, id) {
@@ -85,20 +85,17 @@ export default {
             }
         },
 
-        // Save new stocks and add them to the Vuex store
         async saveBulkStocks({ commit, rootState }, rows) {
             try {
                 const token = rootState.auth.token;
 
 
-                // Call the API to save the new records
                 const res = await axiosInstance.post("/stocks/bulk", { rows }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
-                // Once saved, commit them to the Vuex store
                 commit("ADD_NEW_STOCKS", res.data?.data ?? rows); // Add the new rows to the stocks array
 
                 return res.data?.data ?? rows;
